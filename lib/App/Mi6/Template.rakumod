@@ -72,8 +72,17 @@ done-testing;
 END_OF_TEST
 
 module => qq:to/EOD_OF_MODULE/,
-unit class $module;
+#! /usr/bin/env raku
 
+# #TODO description goes here
+# © 2023 Shimon Bollinger. All rights reserved.
+# Last modified: Tue 30 May 2023 09:12:26 PM EDT
+# Version 0.0.1
+
+# always use the latest version of Raku
+use v6.*;
+
+unit module $module;
 
 =begin pod
 
@@ -81,30 +90,87 @@ unit class $module;
 
 $module - blah blah blah
 
+=head1 VERSION
+
+This documentation refers to $module version 0.0.1
+
 =head1 SYNOPSIS
 
-=begin code :lang<raku>
+    use $module;
+    # Brief but working code example(s) here showing the most common usage(s)
 
-use $module;
-
-=end code
+    # This section will be as far as many users bother reading
+    # so make it as educational and exemplary as possible.
 
 =head1 DESCRIPTION
 
 $module is ...
+A full description of the module and its features.
+May include numerous subsections (i.e. =head2, =head3, etc.)
+
+=head1 SUBROUTINES/METHODS
+
+A separate section listing the public components of the module's interface.
+These normally consist of either subroutines that may be exported, or methods
+that may be called on objects belonging to the classes that the module provides.
+Name the section accordingly.
+
+In an object-oriented module, this section should begin with a sentence of the
+form "An object of this class represents...", to give the reader a high-level
+context to help them understand the methods that are subsequently described.
+
+=head1 DIAGNOSTICS
+
+A list of every error and warning message that the module can generate
+(even the ones that will "never happen"), with a full explanation of each
+problem, one or more likely causes, and any suggested remedies.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+A full explanation of any configuration system(s) used by the module,
+including the names and locations of any configuration files, and the
+meaning of any environment variables or properties that can be set. These
+descriptions must also include details of any configuration language used.
+
+=head1 DEPENDENCIES
+
+A list of all the other modules that this module relies upon, including any
+restrictions on versions, and an indication whether these required modules are
+part of the standard Perl distribution, part of the module's distribution,
+or must be installed separately.
+
+=head1 INCOMPATIBILITIES
+
+A list of any modules that this module cannot be used in conjunction with.
+This may be due to name conflicts in the interface, or competition for
+system or program resources, or due to internal limitations of Perl
+(for example, many modules that use source code filters are mutually
+incompatible).
+
+=head1 BUGS AND LIMITATIONS
+
+There are no known bugs in this module.
+Patches are welcome.
 
 =head1 AUTHOR
 
 $author <$email>
 
-=head1 COPYRIGHT AND LICENSE
+=head1 LICENCE AND COPYRIGHT
 
-Copyright $year $author
+© $year $author All rights reserved.
 
-This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
+This module is free software; you can redistribute it and/or
+modify it under the same terms as Raku itself.
+See L<The Artistic License 2.0|https://opensource.org/licenses/Artistic-2.0>.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 =end pod
 EOD_OF_MODULE
+
 
 license => qq:to/END_OF_LICENSE/,
 		       The Artistic License 2.0
@@ -126,7 +192,7 @@ You are always permitted to make arrangements wholly outside of this
 license directly with the Copyright Holder of a given Package.  If the
 terms of this license do not permit the full use that you propose to
 make of the Package, you should contact the Copyright Holder and seek
-a different licensing arrangement. 
+a different licensing arrangement.
 
 Definitions
 
@@ -159,7 +225,7 @@ Definitions
 
     "Modified Version" means the Package, if it has been changed, and
     such changes were not explicitly requested by the Copyright
-    Holder. 
+    Holder.
 
     "Original License" means this Artistic License as Distributed with
     the Standard Version of the Package, in its current version or as
@@ -195,7 +261,7 @@ Package will still be considered the Standard Version, and as such
 will be subject to the Original License.
 
 
-Distribution of Modified Versions of the Package as Source 
+Distribution of Modified Versions of the Package as Source
 
 (4)  You may Distribute your Modified Version as Source (either gratis
 or for a Distributor Fee, and with or without a Compiled form of the
@@ -217,7 +283,7 @@ you do at least ONE of the following:
     (c)  allow anyone who receives a copy of the Modified Version to
     make the Source form of the Modified Version available to others
     under
-		
+
 	(i)  the Original License or
 
 	(ii)  a license that permits the licensee to freely copy,
@@ -229,7 +295,7 @@ you do at least ONE of the following:
 	Fees are allowed.
 
 
-Distribution of Compiled Forms of the Standard Version 
+Distribution of Compiled Forms of the Standard Version
 or Modified Versions without the Source
 
 (5)  You may Distribute Compiled forms of the Standard Version without
@@ -247,7 +313,7 @@ the Source, provided that you comply with Section 4 with respect to
 the Source of the Modified Version.
 
 
-Aggregating or Linking the Package 
+Aggregating or Linking the Package
 
 (7)  You may aggregate the Package (either the Standard Version or
 Modified Version) with other packages and Distribute the resulting
@@ -264,7 +330,7 @@ include the Package, and Distribute the result without restriction,
 provided the result does not expose a direct interface to the Package.
 
 
-Items That are Not Considered Part of a Modified Version 
+Items That are Not Considered Part of a Modified Version
 
 (9) Works (including, but not limited to, modules and scripts) that
 merely extend or make use of the Package, do not, by themselves, cause
@@ -310,5 +376,51 @@ DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 END_OF_LICENSE
 ;
+
+push %template, 'module' => q:to/EOD_OF_MODULE/,
+
+#no-weave
+#| Run with the option '--test' to test the program
+multi MAIN (:$test!) {
+    use Test;
+
+    my @tests = [
+        %{ input => '', output => '',    text => 'Example 1' },
+    ];
+
+    for @tests {
+#        is some-func(.<input>), .<output>, .<text>;
+    } # end of for @tests
+} # end of multi MAIN (:$test! )
+
+my %*SUB-MAIN-OPTS =
+  :named-anywhere,             # allow named variables at any location
+  :bundling,                   # allow bundling of named arguments
+#  :coerce-allomorphs-to(Str),  # coerce allomorphic arguments to given type
+  :allow-no,                   # allow --no-foo as alternative to --/foo
+  :numeric-suffix-as-value,    # allow -j2 as alternative to --j=2
+;
+
+#| Run with option '--pod' to see all of the POD6 objects
+multi MAIN(Bool :$pod!) {
+    for $=pod -> $pod-item {
+        for $pod-item.contents -> $pod-block {
+            $pod-block.raku.say;
+        }
+    }
+} # end of multi MAIN (:$pod)
+
+#| Run with option '--doc' to generate a document from the POD6
+#| It will be rendered in Text format
+#| unless specified with the --format option.  e.g.
+#|       --doc --format=HTML
+multi MAIN(Bool :$doc!, Str :$format = 'Text') {
+    run $*EXECUTABLE, "--doc=$format", $*PROGRAM;
+} # end of multi MAIN(Bool :$man!)
+#end-no-weave
+EOD_OF_MODULE
+;
+
     %template;
 }
+
